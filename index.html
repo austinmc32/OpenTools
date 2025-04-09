@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Tools - Free Tools for Everyone</title>
+    
+    <!-- Add Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dark-mode">
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Open Tools</h1>
+                    <p>Free tools for everyone</p>
+                </div>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark/Light Mode">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="search-box">
+            <input type="text" id="search-tools" placeholder="Search tools...">
+            <i class="fas fa-search"></i>
+        </div>
+
+        <div class="tools-container">
+            <div class="filter-controls">
+                <div class="category-filter">
+                    <label for="category-select">Category:</label>
+                    <select id="category-select" class="form-control">
+                        <option value="all">All Tools</option>
+                        <option value="text">Text Tools</option>
+                        <option value="number">Number Tools</option>
+                        <option value="converters">Converters</option>
+                        <option value="network">Network Tools</option>
+                        <option value="generators">Generators</option>
+                    </select>
+                </div>
+                <div class="total-count">
+                    <span id="tools-count">14</span> tools available
+                </div>
+            </div>
+
+            <div class="all-tools-grid">
+                <!-- Text Tools -->
+                <div class="tool-card" data-tool="case-converter" data-category="text">
+                    <i class="fas fa-text-height tool-icon"></i>
+                    <h3>Case Converter</h3>
+                    <p>Convert text between different cases</p>
+                </div>
+                <div class="tool-card" data-tool="character-counter" data-category="text">
+                    <i class="fas fa-sort-numeric-up tool-icon"></i>
+                    <h3>Character Counter</h3>
+                    <p>Count characters, words, and sentences</p>
+                </div>
+                <div class="tool-card" data-tool="text-diff" data-category="text">
+                    <i class="fas fa-exchange-alt tool-icon"></i>
+                    <h3>Text Diff</h3>
+                    <p>Find differences between texts</p>
+                </div>
+                <div class="tool-card" data-tool="markdown-previewer" data-category="text">
+                    <i class="fas fa-file-alt tool-icon"></i>
+                    <h3>Markdown Previewer</h3>
+                    <p>Preview and convert Markdown to HTML</p>
+                </div>
+                <div class="tool-card" data-tool="syntax-highlighter" data-category="text">
+                    <i class="fas fa-code tool-icon"></i>
+                    <h3>Syntax Highlighter</h3>
+                    <p>Highlight code in various programming languages</p>
+                </div>
+                <div class="tool-card" data-tool="text-to-speech" data-category="text">
+                    <i class="fas fa-volume-up tool-icon"></i>
+                    <h3>Text to Speech</h3>
+                    <p>Convert text to spoken audio</p>
+                </div>
+                <div class="tool-card" data-tool="text-summarizer" data-category="text">
+                    <i class="fas fa-file-alt tool-icon"></i>
+                    <h3>Text Summarizer</h3>
+                    <p>Generate concise summaries from longer text</p>
+                </div>
+
+                <!-- Number Tools -->
+                <div class="tool-card" data-tool="calculator" data-category="number">
+                    <i class="fas fa-calculator tool-icon"></i>
+                    <h3>Calculator</h3>
+                    <p>Basic and scientific calculator</p>
+                </div>
+                <div class="tool-card" data-tool="unit-converter" data-category="number">
+                    <i class="fas fa-ruler tool-icon"></i>
+                    <h3>Unit Converter</h3>
+                    <p>Convert between different units</p>
+                </div>
+                <div class="tool-card" data-tool="percentage-calculator" data-category="number">
+                    <i class="fas fa-percent tool-icon"></i>
+                    <h3>Percentage Calculator</h3>
+                    <p>Calculate percentages easily</p>
+                </div>
+
+                <!-- Converters -->
+                <div class="tool-card" data-tool="pdf-converter" data-category="converters">
+                    <i class="fas fa-file-pdf tool-icon"></i>
+                    <h3>PDF Converter</h3>
+                    <p>Convert various file types to PDF</p>
+                </div>
+                <div class="tool-card" data-tool="image-converter" data-category="converters">
+                    <i class="fas fa-image tool-icon"></i>
+                    <h3>Image Converter</h3>
+                    <p>Convert between multiple image formats</p>
+                </div>
+                <div class="tool-card" data-tool="crypto-decoder" data-category="converters">
+                    <i class="fas fa-key tool-icon"></i>
+                    <h3>Crypto Decoder</h3>
+                    <p>Convert and translate common cryptic codes</p>
+                </div>
+
+                <!-- Network Tools -->
+                <div class="tool-card" data-tool="ip-finder" data-category="network">
+                    <i class="fas fa-globe tool-icon"></i>
+                    <h3>External IP Finder</h3>
+                    <p>Find your public IP address and details</p>
+                </div>
+                <div class="tool-card" data-tool="ip-lookup" data-category="network">
+                    <i class="fas fa-search-location tool-icon"></i>
+                    <h3>IP Address Lookup</h3>
+                    <p>Look up information about any IP address</p>
+                </div>
+
+                <!-- Generators -->
+                <div class="tool-card" data-tool="barcode-generator" data-category="generators">
+                    <i class="fas fa-barcode tool-icon"></i>
+                    <h3>Barcode Generator</h3>
+                    <p>Generate various types of barcodes</p>
+                </div>
+                <div class="tool-card" data-tool="qrcode-generator" data-category="generators">
+                    <i class="fas fa-qrcode tool-icon"></i>
+                    <h3>QR Code Generator</h3>
+                    <p>Generate customizable QR codes</p>
+                </div>
+                <div class="tool-card" data-tool="password-generator" data-category="generators">
+                    <i class="fas fa-lock tool-icon"></i>
+                    <h3>Password Generator</h3>
+                    <p>Generate secure passwords</p>
+                </div>
+                <div class="tool-card" data-tool="lorem-ipsum" data-category="generators">
+                    <i class="fas fa-paragraph tool-icon"></i>
+                    <h3>Lorem Ipsum</h3>
+                    <p>Generate placeholder text</p>
+                </div>
+                <div class="tool-card" data-tool="uuid-generator" data-category="generators">
+                    <i class="fas fa-random tool-icon"></i>
+                    <h3>UUID Generator</h3>
+                    <p>Generate random UUIDs</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="tool-container" class="hidden">
+        <div class="tool-header">
+            <button id="back-button"><i class="fas fa-arrow-left"></i> Back</button>
+            <h2 id="tool-title">Tool Title</h2>
+        </div>
+        <div id="tool-content">
+            <!-- Tool content will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Tool Request Modal -->
+    <div id="request-modal" class="modal hidden">
+        <div class="modal-content">
+            <button id="close-modal" class="close-btn"><i class="fas fa-times"></i></button>
+            <h2><i class="fas fa-lightbulb"></i> Request a Tool</h2>
+            <p>Can't find the tool you need? Let us know what tools you'd like to see added!</p>
+            
+            <form id="tool-request-form">
+                <div class="form-group">
+                    <label for="request-name">Your Name:</label>
+                    <input type="text" id="request-name" required class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="request-email">Your Email:</label>
+                    <input type="email" id="request-email" required class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="tool-name">Tool Name:</label>
+                    <input type="text" id="tool-name" required class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="tool-description">Describe the tool you'd like:</label>
+                    <textarea id="tool-description" rows="4" required class="form-control"></textarea>
+                </div>
+                
+                <button type="submit" class="primary-button">Submit Request</button>
+            </form>
+            
+            <div id="request-success" class="hidden">
+                <div class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <p>Your tool request has been submitted successfully! We'll review it soon.</p>
+                    <button id="request-another" class="secondary-button">Request Another Tool</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>2025 Open Tools - All tools are free to use</p>
+        </div>
+        <button id="request-tool-btn" class="request-button">
+            <i class="fas fa-lightbulb"></i> Request a Tool
+        </button>
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
+    
+    <!-- Add Prism.js for syntax highlighting - load BEFORE other libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <!-- Add Prism Autoloader plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script>
+        // Configure the Autoloader plugin
+        Prism.plugins.autoloader.languages_path = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/';
+    </script>
+    
+    <!-- Add default Prism theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Other libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</body>
+</html>

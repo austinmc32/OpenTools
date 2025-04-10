@@ -2,6 +2,18 @@ export function qrcodeGenerator(container) {
     container.innerHTML = `
         <div class="tool-interface">
             <div class="qrcode-settings">
+                <div class="control-group">
+                    <label for="qrcode-type">QR Code Type:</label>
+                    <select id="qrcode-type" class="full-width">
+                        <option value="url" selected>URL</option>
+                        <option value="text">Text</option>
+                        <option value="email">Email</option>
+                        <option value="phone">Phone</option>
+                        <option value="sms">SMS</option>
+                        <option value="wifi">WiFi</option>
+                    </select>
+                </div>
+                
                 <div class="control-group" id="qrcode-text-container">
                     <label for="qrcode-text">Content to encode:</label>
                     <textarea id="qrcode-text" rows="3" class="full-width">https://example.com</textarea>
@@ -58,36 +70,6 @@ export function qrcodeGenerator(container) {
                     <div class="control-group half-width">
                         <label for="qrcode-color">Color:</label>
                         <input type="color" id="qrcode-color" value="#000000" class="full-width">
-                    </div>
-                </div>
-                
-                <div class="control-group">
-                    <label>QR Code Type:</label>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="qrcode-type-url" name="qrcode-type" value="url" checked>
-                            <label for="qrcode-type-url">URL</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="qrcode-type-text" name="qrcode-type" value="text">
-                            <label for="qrcode-type-text">Text</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="qrcode-type-email" name="qrcode-type" value="email">
-                            <label for="qrcode-type-email">Email</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="qrcode-type-phone" name="qrcode-type" value="phone">
-                            <label for="qrcode-type-phone">Phone</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="qrcode-type-sms" name="qrcode-type" value="sms">
-                            <label for="qrcode-type-sms">SMS</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="qrcode-type-wifi" name="qrcode-type" value="wifi">
-                            <label for="qrcode-type-wifi">WiFi</label>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -203,7 +185,7 @@ export function qrcodeGenerator(container) {
     const qrcodeMargin = document.getElementById('qrcode-margin');
     const qrcodeErrorCorrection = document.getElementById('qrcode-error-correction');
     const qrcodeColor = document.getElementById('qrcode-color');
-    const qrcodeTypeInputs = document.querySelectorAll('input[name="qrcode-type"]');
+    const qrcodeType = document.getElementById('qrcode-type');
     const generateQrcodeBtn = document.getElementById('generate-qrcode');
     const qrcodeCanvas = document.getElementById('qrcode-canvas');
     const downloadQrPngBtn = document.getElementById('download-qr-png');
@@ -240,10 +222,7 @@ export function qrcodeGenerator(container) {
     };
 
     // Event listeners for QR code
-    qrcodeTypeInputs.forEach(input => {
-        input.addEventListener('change', updateQrCodePlaceholder);
-    });
-
+    qrcodeType.addEventListener('change', updateQrCodePlaceholder);
     generateQrcodeBtn.addEventListener('click', () => generateQRCode(true));
 
     // Initialize QR code interface
@@ -251,7 +230,7 @@ export function qrcodeGenerator(container) {
     
     // Update QR code placeholder on type change
     function updateQrCodePlaceholder() {
-        const selectedType = document.querySelector('input[name="qrcode-type"]:checked').value;
+        const selectedType = qrcodeType.value;
         
         // Hide WiFi fields by default
         wifiFields.style.display = 'none';
@@ -285,7 +264,7 @@ export function qrcodeGenerator(container) {
     function generateQRCode(showSuccessMsg = true) {
         try {
             // Get selected QR code type
-            const selectedType = document.querySelector('input[name="qrcode-type"]:checked').value;
+            const selectedType = qrcodeType.value;
             
             // Get content to encode
             let content;

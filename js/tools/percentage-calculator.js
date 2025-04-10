@@ -16,19 +16,24 @@ export function percentageCalculator(container) {
             .percentage-tabs {
                 display: flex;
                 margin-bottom: 20px;
-                border-radius: 8px;
+                border-radius: 6px;
                 overflow: hidden;
                 border: 1px solid #ddd;
+                gap: 2px;
+                background-color: #ddd;
             }
             
             .percentage-tab {
                 flex: 1;
-                padding: 12px 0;
+                padding: 8px 0;
                 background-color: #e9e9e9;
                 border: none;
                 cursor: pointer;
                 transition: all 0.3s;
-                font-size: 0.9em;
+                font-size: 0.85em;
+                line-height: 1.2;
+                margin: 1px;
+                border-radius: 4px;
             }
             
             .percentage-tab.active {
@@ -172,6 +177,7 @@ export function percentageCalculator(container) {
                 
                 .percentage-tabs {
                     border-color: #444;
+                    background-color: #444;
                 }
                 
                 .percentage-tab {

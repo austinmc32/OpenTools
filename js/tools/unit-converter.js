@@ -34,6 +34,39 @@ export function unitConverter(container) {
         </div>
     `;
 
+    // Add some custom styling for better spacing
+    const style = document.createElement('style');
+    style.textContent = `
+        .converter-inputs {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0;
+            gap: 15px;
+        }
+        .converter-input {
+            flex: 1;
+        }
+        .converter-equals {
+            font-size: 24px;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        .converter-input input,
+        .converter-input select {
+            margin-bottom: 10px;
+        }
+        .conversion-formula {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: inherit;
+        }
+    `;
+    container.appendChild(style);
+
     // DOM elements
     const conversionType = document.getElementById('conversion-type');
     const fromValue = document.getElementById('from-value');
@@ -69,6 +102,55 @@ export function unitConverter(container) {
         ]
     };
     
+    // Define conversion factors relative to base unit for each category
+    const conversionFactors = {
+        length: {
+            meter: 1,
+            kilometer: 1000,
+            centimeter: 0.01,
+            millimeter: 0.001,
+            inch: 0.0254,
+            foot: 0.3048,
+            yard: 0.9144,
+            mile: 1609.344
+        },
+        weight: {
+            kilogram: 1,
+            gram: 0.001,
+            milligram: 0.000001,
+            pound: 0.45359237,
+            ounce: 0.02834952,
+            ton: 1000
+        },
+        area: {
+            'square meter': 1,
+            'square kilometer': 1000000,
+            'square centimeter': 0.0001,
+            'square inch': 0.00064516,
+            'square foot': 0.09290304,
+            'acre': 4046.8564224,
+            'hectare': 10000
+        },
+        volume: {
+            'cubic meter': 1,
+            'liter': 0.001,
+            'milliliter': 0.000001,
+            'gallon': 0.00378541,
+            'quart': 0.000946353,
+            'pint': 0.000473176,
+            'cup': 0.000236588
+        },
+        time: {
+            'second': 1,
+            'minute': 60,
+            'hour': 3600,
+            'day': 86400,
+            'week': 604800,
+            'month': 2592000, // 30-day month
+            'year': 31536000  // 365-day year
+        }
+    };
+
     // Populate initial units and set up event listeners
     populateUnits('length');
     
@@ -147,17 +229,35 @@ export function unitConverter(container) {
                 break;
                 
             default:
-                // Simple conversion using ratios (for demo purposes)
-                result = value * 10; 
+                // Convert using defined conversion factors
                 if (from === to) {
                     result = value;
+                } else {
+                    // Convert from source to base unit, then to target unit
+                    const fromFactor = conversionFactors[type][from];
+                    const toFactor = conversionFactors[type][to];
+                    result = value * (fromFactor / toFactor);
                 }
                 break;
         }
         
-        // Update display
-        toValue.value = result.toFixed(4);
-        formulaText.textContent = `1 ${from} = ${(result/value).toFixed(4)} ${to}`;
+        // Update display with appropriate precision
+        const precision = result < 0.01 ? 6 : result < 1 ? 4 : 2;
+        toValue.value = result.toFixed(precision);
+        
+        // Update formula text with the actual conversion rate
+        let conversionRate;
+        if (type === 'temperature') {
+            if (from === to) {
+                conversionRate = '1';
+            } else {
+                conversionRate = '...custom conversion...';
+            }
+        } else {
+            conversionRate = (conversionFactors[type][from] / conversionFactors[type][to]).toFixed(precision);
+        }
+        
+        formulaText.textContent = `1 ${from} = ${conversionRate} ${to}`;
     }
     
     // Initial conversion

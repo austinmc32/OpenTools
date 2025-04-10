@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const toolTitle = document.getElementById('tool-title');
     const toolContent = document.getElementById('tool-content');
     const toolCards = document.querySelectorAll('.tool-card');
-    const themeToggle = document.getElementById('theme-toggle');
     const requestToolBtn = document.getElementById('request-tool-btn');
     const requestModal = document.getElementById('request-modal');
     const closeModalBtn = document.getElementById('close-modal');
@@ -29,16 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize animations
     animateElementsOnLoad();
-
-    // Theme toggle functionality
-    themeToggle.addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-        updateThemeIcon();
-        saveThemePreference();
-    });
-
-    // Apply saved theme preference
-    applyThemePreference();
 
     // Update tools count
     updateToolsCount();
@@ -176,33 +165,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateToolsCount() {
         const totalTools = toolCards.length;
         toolsCount.textContent = totalTools;
-    }
-
-    // Theme functions
-    function updateThemeIcon() {
-        const isDarkMode = document.body.classList.contains('dark-mode');
-        themeToggle.innerHTML = isDarkMode ? 
-            '<i class="fas fa-sun"></i>' : 
-            '<i class="fas fa-moon"></i>';
-    }
-
-    function saveThemePreference() {
-        const isDarkMode = document.body.classList.contains('dark-mode');
-        localStorage.setItem('darkMode', isDarkMode);
-    }
-
-    function applyThemePreference() {
-        const savedDarkMode = localStorage.getItem('darkMode');
-
-        if (savedDarkMode !== null) {
-            document.body.classList.toggle('dark-mode', savedDarkMode === 'true');
-        } else {
-            // Default to dark mode or check for system preference
-            const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            document.body.classList.toggle('dark-mode', prefersDarkMode);
-        }
-
-        updateThemeIcon();
     }
 
     // Animation functions

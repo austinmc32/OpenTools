@@ -6,6 +6,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load tool styles
     loadToolStyles();
 
+    // Google Analytics setup
+    const gaScript = document.createElement('script');
+    gaScript.async = true;
+    gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-47E938CZN4";
+    document.head.appendChild(gaScript);
+
+    gaScript.onload = () => {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-47E938CZN4');
+    };
+
     // Elements
     const searchInput = document.getElementById('search-tools');
     const categorySelect = document.getElementById('category-select');

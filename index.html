@@ -175,40 +175,16 @@
     <div id="request-modal" class="modal hidden">
         <div class="modal-content">
             <button id="close-modal" class="close-btn"><i class="fas fa-times"></i></button>
-            <h2><i class="fas fa-lightbulb"></i> Request a Tool</h2>
-            <p>Can't find the tool you need? Let us know what tools you'd like to see added!</p>
-            
-            <form id="tool-request-form">
-                <div class="form-group">
-                    <label for="request-name">Your Name:</label>
-                    <input type="text" id="request-name" required class="form-control">
-                </div>
-                
-                <div class="form-group">
-                    <label for="request-email">Your Email:</label>
-                    <input type="email" id="request-email" required class="form-control">
-                </div>
-                
-                <div class="form-group">
-                    <label for="tool-name">Tool Name:</label>
-                    <input type="text" id="tool-name" required class="form-control">
-                </div>
-                
-                <div class="form-group">
-                    <label for="tool-description">Describe the tool you'd like:</label>
-                    <textarea id="tool-description" rows="4" required class="form-control"></textarea>
-                </div>
-                
-                <button type="submit" class="primary-button">Submit Request</button>
-            </form>
-            
-            <div id="request-success" class="hidden">
-                <div class="success-message">
-                    <i class="fas fa-check-circle"></i>
-                    <p>Your tool request has been submitted successfully! We'll review it soon.</p>
-                    <button id="request-another" class="secondary-button">Request Another Tool</button>
-                </div>
-            </div>
+            <h2><i class="fas fa-envelope"></i> Contact Us</h2>
+            <p>If you'd like to request a tool, please send me an email at:</p>
+            <p><strong>austinmc35@gmail.com</strong></p>
+            <button id="copy-email-btn" class="primary-button" style="border-radius: 25px; text-align: center;">Copy Email</button>
+            <p>Or click the button below to open your email webclient:</p>
+            <a href="https://outlook.office.com/mail/deeplink/compose?to=austinmc35@gmail.com" 
+               class="primary-button" 
+               style="border-radius: 25px; text-align: center; display: inline-block; text-decoration: none;">
+               Send Email
+            </a>
         </div>
     </div>
 

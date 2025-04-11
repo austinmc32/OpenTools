@@ -199,21 +199,18 @@ document.addEventListener('DOMContentLoaded', function() {
         requestModal.classList.remove('active');
     });
 
-    // Handle form submission
-    toolRequestForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    // Removed event listener for form submission as there is no form to be submitted now
+    // toolRequestForm.addEventListener('submit', (e) => {
+    //     e.preventDefault();
+    //     toolRequestForm.classList.add('hidden');
+    //     requestSuccess.classList.remove('hidden');
+    // });
 
-        // In a real app, you would send this data to a server
-        // For demo, just show success message
-        toolRequestForm.classList.add('hidden');
-        requestSuccess.classList.remove('hidden');
-    });
-
-    requestAnother.addEventListener('click', () => {
-        toolRequestForm.reset();
-        requestSuccess.classList.add('hidden');
-        toolRequestForm.classList.remove('hidden');
-    });
+   //requestAnother.addEventListener('click', () => {
+   //    toolRequestForm.reset();
+   //    requestSuccess.classList.add('hidden');
+   //    toolRequestForm.classList.remove('hidden');
+   //});
 
     // Close modal when clicking outside
     requestModal.addEventListener('click', (e) => {

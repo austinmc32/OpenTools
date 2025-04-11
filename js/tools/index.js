@@ -19,6 +19,8 @@ import { cryptoDecoder } from './crypto-decoder.js';
 import { imageConverter } from './image-converter.js';
 import { textToSpeech } from './text-to-speech.js';
 import { textSummarizer } from './text-summarizer.js';
+import { csvJsonConverter } from './csv-json-converter.js';
+import { timezoneConverter } from './timezone-converter.js';
 
 // Export all tools as a single object
 export const toolsImplementation = {
@@ -41,5 +43,7 @@ export const toolsImplementation = {
     'crypto-decoder': cryptoDecoder,
     'image-converter': imageConverter,
     'text-to-speech': textToSpeech,
-    'text-summarizer': textSummarizer
+    'text-summarizer': textSummarizer,
+    'csv-json-converter': csvJsonConverter,
+    'timezone-converter': timezoneConverter
 };

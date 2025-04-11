@@ -1,10 +1,14 @@
 import { toolsImplementation } from './tools/index.js';
 import { loadToolStyles } from './css-loader.js';
+import { initializeAnimations, animateToolOpen, animateToolClose, setToolTheme } from './animations.js';
 import './request-handler.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Load tool styles
     loadToolStyles();
+
+    // Initialize animations
+    initializeAnimations();
 
     // Google Analytics setup
     const gaScript = document.createElement('script');
@@ -31,9 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const requestToolBtn = document.getElementById('request-tool-btn');
     const requestModal = document.getElementById('request-modal');
     const closeModalBtn = document.getElementById('close-modal');
-    const toolRequestForm = document.getElementById('tool-request-form');
-    const requestSuccess = document.getElementById('request-success');
-    const requestAnother = document.getElementById('request-another');
+    const pinnedToolsContainer = document.getElementById('pinned-tools-container');
+    const emptyPinsMessage = document.getElementById('empty-pins');
 
     // Tool registry - maps tool IDs to their loading functions
     // Using the consolidated import from index.js
@@ -44,6 +47,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update tools count
     updateToolsCount();
+
+    // Initialize pinned tools
+    initializePinnedTools();
 
     // Category filter
     categorySelect.addEventListener('change', function() {
@@ -68,10 +74,17 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clear previous tool content
         toolContent.innerHTML = '';
 
-        // Get the tool title
+        // Get the tool title and category
         const toolCard = document.querySelector(`.tool-card[data-tool="${toolId}"]`);
         const title = toolCard ? toolCard.querySelector('h3').textContent : 'Tool';
+        const category = toolCard ? toolCard.getAttribute('data-category') : null;
+        
         toolTitle.textContent = title;
+        
+        // Set theme colors based on category
+        if (category) {
+            setToolTheme(category);
+        }
 
         // Special handling for PHP language component if needed
         if (toolId === 'syntax-highlighter') {
@@ -108,11 +121,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     throw new Error(`Invalid tool implementation for ${toolId}`);
                 }
                 
-                // Remove hiding of main so the layout doesn't collapse
-                toolContainer.classList.remove('hidden');
-                setTimeout(() => {
-                    toolContainer.classList.add('visible');
-                }, 10);
+                // Use animation to show tool container
+                animateToolOpen(toolContainer);
             } catch (error) {
                 console.error(`Error loading tool ${toolId}:`, error);
                 toolContent.innerHTML = `
@@ -138,12 +148,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Back button with layout preserved
     backButton.addEventListener('click', function() {
-        // Remove visible class from tool container
-        toolContainer.classList.remove('visible');
-        setTimeout(() => {
-            toolContainer.classList.add('hidden');
-            // Removed: document.querySelector('main').classList.remove('hidden');
-        }, 300);
+        // Use animation to hide tool container
+        animateToolClose(toolContainer, () => {
+            // Reset to default theme after transition
+            setToolTheme('default');
+        });
     });
 
     // Function to filter tools based on search and category
@@ -221,4 +230,113 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize the count of visible tools
     toolsCount.textContent = toolCards.length;
+
+    // Function to initialize pinned tools
+    function initializePinnedTools() {
+        // Get pinned tools from localStorage
+        const pinnedTools = JSON.parse(localStorage.getItem('pinnedTools')) || [];
+        
+        // Add pin icon to all tool cards
+        toolCards.forEach(card => {
+            const toolId = card.getAttribute('data-tool');
+            const isPinned = pinnedTools.includes(toolId);
+            
+            // Create pin button
+            const pinButton = document.createElement('button');
+            pinButton.className = `pin-tool ${isPinned ? 'pinned' : ''}`;
+            pinButton.innerHTML = '<i class="fas fa-thumbtack"></i>';
+            pinButton.setAttribute('title', isPinned ? 'Unpin tool' : 'Pin tool');
+            
+            // Add click event
+            pinButton.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent the card click event
+                togglePinnedTool(toolId, this);
+            });
+            
+            card.appendChild(pinButton);
+        });
+        
+        // Render pinned tools
+        renderPinnedTools();
+    }
+    
+    // Function to toggle a pinned tool
+    function togglePinnedTool(toolId, pinButton) {
+        let pinnedTools = JSON.parse(localStorage.getItem('pinnedTools')) || [];
+        
+        if (pinnedTools.includes(toolId)) {
+            // Remove from pinned
+            pinnedTools = pinnedTools.filter(id => id !== toolId);
+            pinButton.classList.remove('pinned');
+            pinButton.setAttribute('title', 'Pin tool');
+        } else {
+            // Add to pinned
+            pinnedTools.push(toolId);
+            pinButton.classList.add('pinned');
+            pinButton.setAttribute('title', 'Unpin tool');
+        }
+        
+        // Save to localStorage
+        localStorage.setItem('pinnedTools', JSON.stringify(pinnedTools));
+        
+        // Re-render pinned tools
+        renderPinnedTools();
+    }
+    
+    // Function to render pinned tools
+    function renderPinnedTools() {
+        const pinnedTools = JSON.parse(localStorage.getItem('pinnedTools')) || [];
+        const pinnedToolsSection = document.querySelector('.pinned-tools-section');
+        
+        // Clear current pinned tools (except the empty message)
+        Array.from(pinnedToolsContainer.children).forEach(child => {
+            if (child !== emptyPinsMessage) {
+                child.remove();
+            }
+        });
+        
+        // Show/hide empty message and entire section
+        if (pinnedTools.length === 0) {
+            emptyPinsMessage.style.display = 'flex';
+            pinnedToolsSection.classList.remove('has-pins'); // Hide section when no pins
+            return;
+        } else {
+            emptyPinsMessage.style.display = 'none';
+            pinnedToolsSection.classList.add('has-pins'); // Show section when there are pins
+        }
+        
+        // Add pinned tool cards
+        pinnedTools.forEach(toolId => {
+            const originalCard = document.querySelector(`.tool-card[data-tool="${toolId}"]`);
+            if (!originalCard) return;
+            
+            // Clone the card
+            const clonedCard = originalCard.cloneNode(true);
+            
+            // Replace the pin icon with an unpin icon
+            const pinButton = clonedCard.querySelector('.pin-tool');
+            if (pinButton) {
+                pinButton.innerHTML = '<i class="fas fa-times"></i>';
+                pinButton.setAttribute('title', 'Remove from pinned');
+                
+                // Add click event
+                pinButton.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent the card click event
+                    
+                    // Find the original pin button and toggle it
+                    const originalPinButton = originalCard.querySelector('.pin-tool');
+                    if (originalPinButton) {
+                        togglePinnedTool(toolId, originalPinButton);
+                    }
+                });
+            }
+            
+            // Add click event to the cloned card
+            clonedCard.addEventListener('click', () => {
+                loadTool(toolId);
+            });
+            
+            pinnedToolsContainer.appendChild(clonedCard);
+        });
+    }
 });

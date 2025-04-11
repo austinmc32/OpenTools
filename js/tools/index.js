@@ -21,6 +21,8 @@ import { textToSpeech } from './text-to-speech.js';
 import { textSummarizer } from './text-summarizer.js';
 import { csvJsonConverter } from './csv-json-converter.js';
 import { timezoneConverter } from './timezone-converter.js';
+import { interestCalculator } from './interest-calculator.js';
+import { textParaphraser } from './text-paraphraser.js';
 
 // Export all tools as a single object
 export const toolsImplementation = {
@@ -45,5 +47,7 @@ export const toolsImplementation = {
     'text-to-speech': textToSpeech,
     'text-summarizer': textSummarizer,
     'csv-json-converter': csvJsonConverter,
-    'timezone-converter': timezoneConverter
+    'timezone-converter': timezoneConverter,
+    'interest-calculator': interestCalculator,
+    'text-paraphraser': textParaphraser
 };

@@ -1162,3 +1162,146 @@ button:focus, input:focus, select:focus, textarea:focus {
     border-radius: 8px;
     overflow: hidden;
 }
+
+/* Add these new styles to your existing CSS file */
+
+/* Pinned and Featured Tools Sections */
+.pinned-tools-section,
+.featured-tools-section {
+    margin-bottom: 2rem;
+    background: var(--card-bg-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.75rem;
+}
+
+.section-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-header p {
+    color: var(--secondary-text-color);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Pinned Tools */
+.pinned-tools-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.empty-pins {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    color: var(--secondary-text-color);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.empty-pins i {
+    margin-bottom: 1rem;
+    transform: rotate(45deg);
+    opacity: 0.7;
+}
+
+/* Featured Tools */
+.featured-tools-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.featured-card {
+    position: relative;
+    padding: 1.5rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid var(--accent-color);
+}
+
+.featured-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Update Featured Badge Position */
+.featured-badge {
+    position: absolute;
+    top: 0;
+    left: 0; /* Changed from right to left */
+    background: var(--accent-color);
+    color: white;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    border-bottom-right-radius: 8px; /* Changed from border-bottom-left-radius */
+    border-top-left-radius: 0; /* Added to ensure proper corner rounding */
+}
+
+/* Adjust tool cards to include pin icon - moved to top left */
+.tool-card {
+    position: relative;
+}
+
+.tool-card .pin-tool {
+    position: absolute;
+    top: 10px;
+    left: 10px; /* Changed from right to left */
+    background: none;
+    border: none;
+    color: var(--secondary-text-color);
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 1; /* Added to ensure it's above other elements */
+}
+
+.tool-card:hover .pin-tool {
+    opacity: 1;
+}
+
+.tool-card .pin-tool.pinned {
+    color: var(--accent-color);
+    opacity: 1;
+    transform: rotate(-10deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .featured-tools-container {
+        grid-template-columns: 1fr;
+    }
+
+    .featured-card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Adjust pinned tools section visibility */
+.pinned-tools-section {
+    margin-bottom: 2rem;
+    background: var(--card-bg-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: none; /* Hide by default until tools are pinned */
+}
+
+.pinned-tools-section.has-pins {
+    display: block; /* Show only when there are pinned tools */
+}

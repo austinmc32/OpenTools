@@ -1,0 +1,246 @@
+/* Animated Gradients */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.gradient-bg {
+    background: linear-gradient(45deg, 
+        #040b17, /* Deep blue-black */
+        #071323, /* Dark navy */
+        #0a192f, /* Dark blue */
+        #0f2645, /* Navy */
+        #15355e, /* Medium navy */
+        #102a48, /* Darker blue */
+        #081221  /* Deep blue-black */
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+}
+
+/* Page Transition Animations */
+.page-transition-enter {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.page-transition-exit {
+    opacity: 1;
+}
+
+.page-transition-exit-active {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Tool Card Hover Effects */
+.tool-card {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                box-shadow 0.3s ease,
+                background-color 0.3s ease;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.tool-card::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(30, 80, 120, 0.2), /* Darker blue */
+        rgba(25, 55, 95, 0.2)  /* Darker accent */
+    );
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform 0.5s ease-out;
+    border-radius: 8px;
+}
+
+.tool-card:hover::before {
+    transform: scaleX(1);
+}
+
+.tool-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Tool Card Click Effects */
+.tool-card:active {
+    transform: translateY(-2px) scale(0.98);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Remove Pulse Animation from featured cards */
+.featured-card {
+    /* Animation removed */
+    animation: none;
+}
+
+/* Button hover effects */
+.primary-button, .secondary-button {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.primary-button::after, .secondary-button::after {
+    content: "";
+    position: absolute;
+    left: -20%;
+    top: -20%;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(
+        circle, 
+        rgba(100, 100, 100, 0.2) 0%, /* Darker highlight */
+        rgba(40, 40, 40, 0) 70%
+    );
+    transform: rotate(45deg);
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    z-index: -1;
+    opacity: 0;
+}
+
+.primary-button:hover::after, .secondary-button:hover::after {
+    opacity: 1;
+    transform: rotate(45deg) translate(-10%, -10%);
+}
+
+/* Transparent Header and Footer */
+header, footer {
+    background-color: transparent !important; /* Override the default background */
+    box-shadow: none !important; /* Remove any shadows */
+    position: relative;
+    z-index: 1;
+}
+
+/* Remove gradient overlays for complete transparency */
+header::before, footer::before {
+    content: none; /* Remove the overlay completely */
+}
+
+/* Remove background from footer container as well */
+footer .container {
+    background-color: transparent !important; /* Make completely transparent */
+    border-radius: 0;
+    padding: 8px;
+}
+
+/* Tool load animation */
+@keyframes toolLoad {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.load-animation {
+    animation: toolLoad 0.5s ease-out forwards;
+}
+
+/* Sequential fade in for multiple elements */
+.fade-in-sequence > * {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.fade-in-sequence > *:nth-child(1) { animation-delay: 0.1s; }
+.fade-in-sequence > *:nth-child(2) { animation-delay: 0.2s; }
+.fade-in-sequence > *:nth-child(3) { animation-delay: 0.3s; }
+.fade-in-sequence > *:nth-child(4) { animation-delay: 0.4s; }
+.fade-in-sequence > *:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading animations */
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-left-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spinner 1s linear infinite;
+}
+
+/* Star background animations with reduced brightness */
+.starfield-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    opacity: 0.35; /* Reduced from 0.7 (50% reduction) */
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    background: rgba(220, 235, 255, 0.4); /* Reduced from 0.8 (50% reduction) */
+    border-radius: 50%;
+    opacity: 0.35; /* Reduced from 0.7 (50% reduction) */
+    transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0 0 2px 0.5px rgba(200, 225, 255, 0.15); /* Reduced glow effect */
+}
+
+/* Additional modifications for darker stars with varying colors - 50% reduced brightness */
+.star.dim {
+    background: rgba(180, 195, 230, 0.3); /* Reduced from 0.6 */
+    opacity: 0.25; /* Reduced from 0.5 */
+    box-shadow: 0 0 1px rgba(180, 195, 230, 0.1);
+}
+
+.star.medium {
+    background: rgba(200, 215, 240, 0.35); /* Reduced from 0.7 */
+    opacity: 0.3; /* Reduced from 0.6 */
+    box-shadow: 0 0 1.5px rgba(200, 215, 240, 0.15);
+}
+
+.star.bright {
+    background: rgba(225, 235, 255, 0.45); /* Reduced from 0.9 */
+    opacity: 0.4; /* Reduced from 0.8 */
+    box-shadow: 0 0 2.5px 1px rgba(225, 235, 255, 0.2); /* Reduced from 0.4 */
+}

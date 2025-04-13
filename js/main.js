@@ -63,18 +63,43 @@ document.addEventListener('DOMContentLoaded', function() {
         filterTools();
     });
 
-    // Tool card click handler using Event Delegation
-    mainElement.addEventListener('click', (event) => {
+    // Tool card click handler using Event Delegation - enhanced for mobile
+    mainElement.addEventListener('click', handleToolCardActivation);
+    
+    // Add explicit touchend handler for mobile devices
+    mainElement.addEventListener('touchend', (event) => {
+        // Prevent the simulated mouse click that would follow
+        // Only if we're handling a tool card
         const clickedCard = event.target.closest('.tool-card');
         if (clickedCard) {
+            event.preventDefault();
+            handleToolCardActivation(event);
+        }
+    }, {passive: false}); // non-passive to allow preventDefault
+    
+    // Unified handler function for both click and touch
+    function handleToolCardActivation(event) {
+        const clickedCard = event.target.closest('.tool-card');
+        if (clickedCard) {
+            // Don't handle clicks on the pin button
+            if (event.target.closest('.pin-tool')) {
+                return;
+            }
+            
             const toolId = clickedCard.getAttribute('data-tool');
             if (toolId) {
+                // Add active state visual feedback for mobile users
+                clickedCard.classList.add('card-activated');
+                setTimeout(() => {
+                    clickedCard.classList.remove('card-activated');
+                }, 300);
+                
                 loadTool(toolId);
             } else {
                 console.warn("Clicked card is missing data-tool attribute:", clickedCard);
             }
         }
-    });
+    }
 
     // Function to load a tool
     function loadTool(toolId) {

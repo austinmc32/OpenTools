@@ -397,6 +397,7 @@ header {
     overflow: hidden;
     transform-style: preserve-3d; /* Allow 3D transforms for children */
     will-change: transform, box-shadow; /* Optimize for transforms */
+    touch-action: manipulation; /* Improve touch responsiveness */
 }
 
 .tool-card:hover {
@@ -407,6 +408,14 @@ header {
 
 .tool-card:hover::before {
     transform: scaleX(1);
+}
+
+/* Add active state styling for touch devices */
+.tool-card.card-activated {
+    /* Provide immediate visual feedback when tapped on mobile */
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 /* Apply complex 3D transforms and shadow ONLY on devices that support hover */
@@ -420,6 +429,26 @@ header {
     .tool-card:hover .tool-icon {
         /* Icon Parallax Effect - moves slightly opposite to card tilt */
         transform: translateZ(40px) scale(1.1) rotateX(-5deg) rotateY(5deg);
+    }
+}
+
+/* Specific mobile optimizations */
+@media (hover: none) {
+    /* For touch-only devices */
+    .tool-card:active {
+        /* Provide immediate feedback on tap */
+        transform: translateY(-2px);
+        border-color: var(--accent-color);
+    }
+
+    /* Ensure icons in cards don't interfere with taps */
+    .tool-icon {
+        pointer-events: none;
+    }
+    
+    /* Ensure pin buttons can still be tapped */
+    .pin-tool {
+        pointer-events: auto;
     }
 }
 

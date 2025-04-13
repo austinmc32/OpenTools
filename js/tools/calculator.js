@@ -5,8 +5,10 @@ export function calculator(container) {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                width: 350px;
-                margin: 0 auto;
+                /* Change fixed width to responsive max-width */
+                max-width: 350px; /* Max width on larger screens */
+                width: 100%;      /* Take full available width up to max-width */
+                margin: 0 auto;   /* Keep auto margins for centering */
                 border: 1px solid #bbb;
                 padding: 10px;
                 background-color: #eee;

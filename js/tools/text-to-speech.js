@@ -59,51 +59,43 @@ export function textToSpeech(container) {
             return;
         }
 
+        // Get all available voices
         voices = synthesis.getVoices();
-        
-        // Sort voices: Microsoft voices first (prioritizing natural ones), 
-        // then other English voices, then the rest
-        voices.sort((a, b) => {
-            // Microsoft natural voices first
-            const aMicrosoftNatural = a.name.toLowerCase().includes('microsoft') && 
-                                     a.name.toLowerCase().includes('natural') && 
-                                     a.lang.startsWith('en');
-            const bMicrosoftNatural = b.name.toLowerCase().includes('microsoft') && 
-                                     b.name.toLowerCase().includes('natural') && 
-                                     b.lang.startsWith('en');
-            
-            // Then other Microsoft voices
-            const aMicrosoft = a.name.toLowerCase().includes('microsoft');
-            const bMicrosoft = b.name.toLowerCase().includes('microsoft');
-            
-            // Then English voices
-            const aEnglish = a.lang.startsWith('en');
-            const bEnglish = b.lang.startsWith('en');
-            
-            // Sort order logic
-            if (aMicrosoftNatural && !bMicrosoftNatural) return -1;
-            if (!aMicrosoftNatural && bMicrosoftNatural) return 1;
-            if (aMicrosoft && !bMicrosoft) return -1;
-            if (!aMicrosoft && bMicrosoft) return 1;
-            if (aEnglish && !bEnglish) return -1;
-            if (!aEnglish && bEnglish) return 1;
-            
-            // Default sort by name
-            return a.name.localeCompare(b.name);
-        });
-        
-        voiceSelect.innerHTML = '';
-        
-        voices.forEach(voice => {
-            const option = document.createElement('option');
-            option.textContent = `${voice.name} (${voice.lang})`;
-            option.value = voice.name;
-            voiceSelect.appendChild(option);
-        });
-        
-        // If no voices are available yet, wait and try again
+
+        // Sort all voices alphabetically by name
+        voices.sort((a, b) => a.name.localeCompare(b.name));
+
+        voiceSelect.innerHTML = ''; // Clear existing options
+
         if (voices.length === 0) {
-            setTimeout(loadVoices, 100);
+            // If no voices found at all, display a message
+            const option = document.createElement('option');
+            option.textContent = 'No voices available';
+            option.disabled = true;
+            voiceSelect.appendChild(option);
+            speakBtn.disabled = true; // Disable speak if no voices
+        } else {
+            // Populate dropdown with all available voices
+            voices.forEach(voice => {
+                const option = document.createElement('option');
+                option.textContent = `${voice.name} (${voice.lang})`;
+                option.value = voice.name;
+                voiceSelect.appendChild(option);
+            });
+            speakBtn.disabled = false; // Enable speak button
+        }
+
+        // If no voices are available *at all* yet (still loading), wait and try again
+        if (synthesis.getVoices().length === 0) { // Check original list length here
+            // Add a temporary "Loading..." option while waiting
+            if (voiceSelect.options.length === 0) {
+                 const loadingOption = document.createElement('option');
+                 loadingOption.textContent = 'Loading voices...';
+                 loadingOption.disabled = true;
+                 voiceSelect.appendChild(loadingOption);
+            }
+            speakBtn.disabled = true; // Keep disabled while loading
+            setTimeout(loadVoices, 150); // Increased timeout slightly
         }
     }
     

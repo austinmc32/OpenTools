@@ -63,20 +63,57 @@ document.addEventListener('DOMContentLoaded', function() {
         filterTools();
     });
 
+    // Add touch tracking variables for distinguishing taps from scrolls
+    let touchStartY = 0;
+    let touchStartX = 0;
+    let touchMoved = false;
+    const TOUCH_MOVE_THRESHOLD = 10; // pixels - if finger moved more than this, it's a scroll not a tap
+
+    // Touch start - track where the touch began
+    mainElement.addEventListener('touchstart', (event) => {
+        if (event.touches.length > 0) {
+            touchStartY = event.touches[0].clientY;
+            touchStartX = event.touches[0].clientX;
+            touchMoved = false;
+        }
+    }, {passive: true});
+
+    // Touch move - detect if significant movement occurred (indicating a scroll)
+    mainElement.addEventListener('touchmove', (event) => {
+        if (event.touches.length > 0) {
+            const touchY = event.touches[0].clientY;
+            const touchX = event.touches[0].clientX;
+            // Calculate distance moved
+            const deltaY = Math.abs(touchY - touchStartY);
+            const deltaX = Math.abs(touchX - touchStartX);
+            
+            // If moved more than threshold in any direction, it's a scroll
+            if (deltaY > TOUCH_MOVE_THRESHOLD || deltaX > TOUCH_MOVE_THRESHOLD) {
+                touchMoved = true;
+            }
+        }
+    }, {passive: true});
+
     // Tool card click handler using Event Delegation - enhanced for mobile
     mainElement.addEventListener('click', handleToolCardActivation);
     
-    // Add explicit touchend handler for mobile devices
+    // Replace existing touchend handler with improved version
     mainElement.addEventListener('touchend', (event) => {
-        // Prevent the simulated mouse click that would follow
-        // Only if we're handling a tool card
-        const clickedCard = event.target.closest('.tool-card');
-        if (clickedCard) {
-            event.preventDefault();
-            handleToolCardActivation(event);
+        // Only treat as a tap if the touch didn't move significantly (wasn't a scroll)
+        if (!touchMoved) {
+            const clickedCard = event.target.closest('.tool-card');
+            if (clickedCard) {
+                // Don't handle clicks on the pin button
+                if (!event.target.closest('.pin-tool')) {
+                    event.preventDefault();
+                    handleToolCardActivation(event);
+                }
+            }
         }
+        // Reset for next touch interaction
+        touchMoved = false;
     }, {passive: false}); // non-passive to allow preventDefault
-    
+
     // Unified handler function for both click and touch
     function handleToolCardActivation(event) {
         const clickedCard = event.target.closest('.tool-card');
